@@ -1,25 +1,45 @@
-// Providers often supply types with their API libraries.
+export type CloudbeesUser = {
+  user: {
+    id: string;
+    absoluteUrl: string;
+    fullName: string;
+    description?: string;
+  };
+};
 
-export interface AcmeUser {
-  id: string;
+export type CloudbeesUserResponse = {
+  _class: string;
+  users: CloudbeesUser[];
+};
+
+export type CloudbeesGroup = {
+  description?: string;
   name: string;
-}
+  roleAssignments: {
+    inherited: boolean;
+    offset: number;
+    role: string;
+  }[];
+  roles: string[];
+  url: string;
+  users: string[];
+};
 
-export interface AcmeGroup {
+export type CloudbeesGroupResponse = {
+  _class: string;
+  groups: CloudbeesGroup[];
+};
+
+export type CloudbeesRole = {
+  description?: string;
+  filterable: boolean;
+  grantedPermissions: string[];
   id: string;
-  name: string;
-  users?: Pick<AcmeUser, 'id'>[];
-}
+  shortUrl: string;
+};
 
-// Those can be useful to a degree, but often they're just full of optional
-// values. Understanding the response data may be more reliably accomplished by
-// reviewing the API response recordings produced by testing the wrapper client
-// (./client.ts). However, when there are no types provided, it is necessary to define
-// opaque types for each resource, to communicate the records that are expected
-// to come from an endpoint and are provided to iterating functions.
-
-/*
-import { Opaque } from 'type-fest';
-export type AcmeUser = Opaque<any, 'AcmeUser'>;
-export type AcmeGroup = Opaque<any, 'AcmeGroup'>;
-*/
+export type CloudbeesRoleResponse = {
+  _class: string;
+  filterableRoles: string[];
+  roles: CloudbeesRole[];
+};

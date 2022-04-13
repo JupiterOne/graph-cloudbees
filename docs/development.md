@@ -1,28 +1,38 @@
 # Development
 
-Add details here to give a brief overview of how to work with the provider APIs.
-Please reference any SDKs or API docs used to help build the integration here.
+This integration focuses on Cloudbees CI and is using
+[Cloudbees CI API](https://docs.cloudbees.com/docs/cloudbees-ci-api/latest/api-authentication)
+and [Jenkins API](https://www.jenkins.io/doc/book/using/remote-access-api/) for
+interacting with the Hexnode resources.
 
 ## Prerequisites
 
-Supply details about software or tooling (like maybe Docker or Terraform) that
-is needed for development here.
-
-Please supply references to documentation that details how to install those
-dependencies here.
-
-Tools like Node.js and NPM are already covered in the [README](../README.md) so
-don't bother documenting that here.
+Cloudbees CI needs to be deployed using a Kubernetes cluster. For instructions
+on how to deploy Cloudbees CI on your preferred cloud provider or on your local
+machine. Follow
+[this guide](https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-onboarding#:~:text=Requirements%20validation%20tool-,Install,-Use%20installation%20instructions).
 
 ## Provider account setup
 
-Please provide information about the steps needed to create an account with a
-provider. Images and references to a provider's documentation is very helpful
-for new developers picking up your work.
+If you don't have a user yet create a user in your Cloudbees CI Operations
+Dashboards.
+
+1. In the menu on the left, select **Manage Jenkins**
+2. In the **Security** section, select **Manage Users**
+3. In the menu on the left, select **Create User**
+4. Fill-up the form and then select **Create User**
 
 ## Authentication
 
-Supply details here for information on how to authenticate with a provider so
-that developers have an idea of what's needed to hit APIs. It may be useful to
-provide explanations for each value specified in the
-[`IntegrationInstanceConfigFieldMap`](../src/config.ts).
+[Generate an API key](https://docs.cloudbees.com/docs/cloudbees-ci-api/latest/api-authentication).
+
+1. From the dashboard, select your user name on the right of the top navigation
+   bar.
+2. Select Configure from the left pane.
+3. Select Add new Token under API Token.
+4. Enter a name to distinguish the token.
+5. Select the copy icon and save the token in a safe place so you can use it
+   later.
+
+Provide the Username as User ID, API Key, and the Hostname of your deployment in
+the `.env`. You can use [.env.example](../.env.example) as reference.
