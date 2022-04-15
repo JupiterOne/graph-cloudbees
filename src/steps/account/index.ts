@@ -11,8 +11,11 @@ export const ACCOUNT_ENTITY_KEY = 'entity:account';
 
 export async function fetchAccountDetails({
   jobState,
+  instance,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
-  const accountEntity = await jobState.addEntity(createAccountEntity());
+  const accountEntity = await jobState.addEntity(
+    createAccountEntity({ hostname: instance.config.hostname }),
+  );
 
   await jobState.setData(ACCOUNT_ENTITY_KEY, accountEntity);
 }

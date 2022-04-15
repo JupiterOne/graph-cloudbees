@@ -1,9 +1,19 @@
-import http from 'http';
-
-import { IntegrationProviderAuthenticationError } from '@jupiterone/integration-sdk-core';
+import fetch from 'node-fetch';
+import {
+  IntegrationProviderAPIError,
+  IntegrationProviderAuthenticationError,
+} from '@jupiterone/integration-sdk-core';
 
 import { IntegrationConfig } from './config';
-import { AcmeUser, AcmeGroup } from './types';
+import {
+  CloudbeesGroup,
+  CloudbeesGroupResponse,
+  CloudbeesRole,
+  CloudbeesRoleResponse,
+  CloudbeesUser,
+  CloudbeesUserResponse,
+} from './types';
+import { retry } from '@lifeomic/attempt';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
 
@@ -18,35 +28,58 @@ export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
 export class APIClient {
   constructor(readonly config: IntegrationConfig) {}
 
-  public async verifyAuthentication(): Promise<void> {
-    // TODO make the most light-weight request possible to validate
-    // authentication works with the provided credentials, throw an err if
-    // authentication fails
-    const request = new Promise<void>((resolve, reject) => {
-      http.get(
-        {
-          hostname: 'localhost',
-          port: 443,
-          path: '/api/v1/some/endpoint?limit=1',
-          agent: false,
-          timeout: 10,
+  private withBaseUri = (path: string): string =>
+    `${this.config.hostname}${path}`;
+
+  private async request<T>(uri: string): Promise<T> {
+    try {
+      const options = {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+            `${this.config.userId}:${this.config.apiKey}`,
+          ).toString('base64')}`,
         },
-        (res) => {
-          if (res.statusCode !== 200) {
-            reject(new Error('Provider authentication failed'));
-          } else {
-            resolve();
-          }
+      };
+
+      // Handle rate-limiting
+      const response = await retry(
+        async () => {
+          return await fetch(uri, options);
+        },
+        {
+          delay: 5000,
+          maxAttempts: 10,
+          handleError: (err, context) => {
+            if (
+              err.statusCode !== 429 ||
+              (err.statusCode >= 500 &&
+                err.statusCode < 600 &&
+                context.attemptNum > 1)
+            )
+              context.abort();
+          },
         },
       );
-    });
 
+      return response.json();
+    } catch (err) {
+      throw new IntegrationProviderAPIError({
+        endpoint: uri,
+        status: err.status,
+        statusText: err.statusText,
+      });
+    }
+  }
+
+  public async verifyAuthentication(): Promise<void> {
+    const uri = this.withBaseUri('/casc-bundle/list');
     try {
-      await request;
+      await this.request(uri);
     } catch (err) {
       throw new IntegrationProviderAuthenticationError({
         cause: err,
-        endpoint: 'https://localhost/api/v1/some/endpoint?limit=1',
+        endpoint: uri,
         status: err.status,
         statusText: err.statusText,
       });
@@ -59,28 +92,13 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateUsers(
-    iteratee: ResourceIteratee<AcmeUser>,
+    iteratee: ResourceIteratee<CloudbeesUser>,
   ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
+    const response = await this.request<CloudbeesUserResponse>(
+      this.withBaseUri(`/asynchPeople/api/json/?depth=2`),
+    );
 
-    const users: AcmeUser[] = [
-      {
-        id: 'acme-user-1',
-        name: 'User One',
-      },
-      {
-        id: 'acme-user-2',
-        name: 'User Two',
-      },
-    ];
-
-    for (const user of users) {
+    for (const user of response.users) {
       await iteratee(user);
     }
   }
@@ -91,30 +109,31 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateGroups(
-    iteratee: ResourceIteratee<AcmeGroup>,
+    iteratee: ResourceIteratee<CloudbeesGroup>,
   ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
+    const response = await this.request<CloudbeesGroupResponse>(
+      this.withBaseUri(`/groups/api/json/?depth=2`),
+    );
 
-    const groups: AcmeGroup[] = [
-      {
-        id: 'acme-group-1',
-        name: 'Group One',
-        users: [
-          {
-            id: 'acme-user-1',
-          },
-        ],
-      },
-    ];
-
-    for (const group of groups) {
+    for (const group of response.groups) {
       await iteratee(group);
+    }
+  }
+
+  /**
+   * Iterates each role resource in the provider.
+   *
+   * @param iteratee receives each resource to produce entities/relationships
+   */
+  public async iterateRoles(
+    iteratee: ResourceIteratee<CloudbeesRole>,
+  ): Promise<void> {
+    const response = await this.request<CloudbeesRoleResponse>(
+      this.withBaseUri(`/roles/api/json/?depth=1`),
+    );
+
+    for (const role of response.roles) {
+      await iteratee(role);
     }
   }
 }

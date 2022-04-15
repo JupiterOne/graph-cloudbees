@@ -4,7 +4,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const accessSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: /asynchPeople/api/json/?depth=2
      * PATTERN: Fetch Entities
      */
     id: 'fetch-users',
@@ -12,16 +12,16 @@ export const accessSpec: StepSpec<IntegrationConfig>[] = [
     entities: [
       {
         resourceName: 'User',
-        _type: 'acme_user',
+        _type: 'cloudbees_user',
         _class: ['User'],
       },
     ],
     relationships: [
       {
-        _type: 'acme_account_has_user',
-        sourceType: 'acme_account',
+        _type: 'cloudbees_account_has_user',
+        sourceType: 'cloudbees_account',
         _class: RelationshipClass.HAS,
-        targetType: 'acme_user',
+        targetType: 'cloudbees_user',
       },
     ],
     dependsOn: ['fetch-account'],
@@ -29,7 +29,7 @@ export const accessSpec: StepSpec<IntegrationConfig>[] = [
   },
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/groups
+     * ENDPOINT: /groups/api/json/?depth=2
      * PATTERN: Fetch Entities
      */
     id: 'fetch-groups',
@@ -37,16 +37,41 @@ export const accessSpec: StepSpec<IntegrationConfig>[] = [
     entities: [
       {
         resourceName: 'UserGroup',
-        _type: 'acme_group',
+        _type: 'cloudbees_group',
         _class: ['UserGroup'],
       },
     ],
     relationships: [
       {
-        _type: 'acme_account_has_group',
-        sourceType: 'acme_account',
+        _type: 'cloudbees_account_has_group',
+        sourceType: 'cloudbees_account',
         _class: RelationshipClass.HAS,
-        targetType: 'acme_group',
+        targetType: 'cloudbees_group',
+      },
+    ],
+    dependsOn: ['fetch-account'],
+    implemented: true,
+  },
+  {
+    /**
+     * ENDPOINT: /roles/api/json/?depth=1
+     * PATTERN: Fetch Entities
+     */
+    id: 'fetch-roles',
+    name: 'Fetch Roles',
+    entities: [
+      {
+        resourceName: 'Role',
+        _type: 'cloudbees_role',
+        _class: ['AccessRole'],
+      },
+    ],
+    relationships: [
+      {
+        _type: 'cloudbees_account_has_role',
+        sourceType: 'cloudbees_account',
+        _class: RelationshipClass.HAS,
+        targetType: 'cloudbees_role',
       },
     ],
     dependsOn: ['fetch-account'],
@@ -62,13 +87,32 @@ export const accessSpec: StepSpec<IntegrationConfig>[] = [
     entities: [],
     relationships: [
       {
-        _type: 'acme_group_has_user',
-        sourceType: 'acme_group',
+        _type: 'cloudbees_group_has_user',
+        sourceType: 'cloudbees_group',
         _class: RelationshipClass.HAS,
-        targetType: 'acme_user',
+        targetType: 'cloudbees_user',
       },
     ],
     dependsOn: ['fetch-groups', 'fetch-users'],
+    implemented: true,
+  },
+  {
+    /**
+     * ENDPOINT: n/a
+     * PATTERN: Build Child Relationships
+     */
+    id: 'build-group-role-relationships',
+    name: 'Build Group -> Role Relationships',
+    entities: [],
+    relationships: [
+      {
+        _type: 'cloudbees_group_assigned_role',
+        sourceType: 'cloudbees_group',
+        _class: RelationshipClass.ASSIGNED,
+        targetType: 'cloudbees_role',
+      },
+    ],
+    dependsOn: ['fetch-groups', 'fetch-roles'],
     implemented: true,
   },
 ];
