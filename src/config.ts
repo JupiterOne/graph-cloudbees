@@ -39,17 +39,17 @@ export const instanceConfigFields: IntegrationInstanceConfigFieldMap = {
  */
 export interface IntegrationConfig extends IntegrationInstanceConfig {
   /**
-   * The provider API client ID used to authenticate requests.
+   * The Cloudbees user ID used to authenticate requests.
    */
   userId: string;
 
   /**
-   * The provider API client secret used to authenticate requests.
+   * The Cloudbees API key used to authenticate requests.
    */
   apiKey: string;
 
   /**
-   * The provider hostname.
+   * The Cloudbees hostname.
    */
   hostname: string;
 }
