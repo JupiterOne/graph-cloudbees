@@ -1,4 +1,4 @@
-# Integration with JupiterOne
+# Cloudbees Integration with JupiterOne
 
 ## Cloudbees CI + JupiterOne Integration Benefits
 
