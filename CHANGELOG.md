@@ -8,6 +8,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed the way user names are passed in the `build-user-group-relationships`
+  step which previously caused some relationships not to be built (depending on
+  the name-value).
+
 ## 1.0.0 - 2022-04-20
 
 ### Added
