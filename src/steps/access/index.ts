@@ -94,7 +94,10 @@ export async function buildGroupUserRelationships({
       }
 
       for (const user of group.users || []) {
-        const userEntity = await jobState.findEntity(createUserKey(user));
+        const processedUsername = user.replace(/\s+/g, '-').toLowerCase();
+        const userEntity = await jobState.findEntity(
+          createUserKey(processedUsername),
+        );
 
         if (!userEntity) {
           throw new IntegrationMissingKeyError(
