@@ -65,6 +65,15 @@ export async function validateInvocation(
     );
   }
 
+  const regEx: RegExp =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/cjoc$/g;
+
+  if (!regEx.test(config.hostname)) {
+    throw new IntegrationValidationError(
+      'The hostname value is of an invalid format (valid: http(s)://ip-hostname/cjoc).',
+    );
+  }
+
   const apiClient = createAPIClient(config);
   await apiClient.verifyAuthentication();
 }
