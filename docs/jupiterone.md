@@ -1,16 +1,16 @@
-# Cloudbees Integration with JupiterOne
+# CloudBees Integration with JupiterOne
 
-## Cloudbees CI + JupiterOne Integration Benefits
+## CloudBees CI + JupiterOne Integration Benefits
 
-- Visualize Cloudbees CI users, groups, roles, and account in the JupiterOne
+- Visualize CloudBees CI users, groups, roles, and account in the JupiterOne
   graph.
-- Map Cloudbees CI users to employees in your JupiterOne account.
-- Monitor changes to Cloudbees CI users using JupiterOne alerts.
+- Map CloudBees CI users to employees in your JupiterOne account.
+- Monitor changes to CloudBees CI users using JupiterOne alerts.
 
 ## How it Works
 
 - JupiterOne periodically fetches users, groups, roles, and account from
-  Cloudbees CI to update the graph.
+  CloudBees CI to update the graph.
 - Write JupiterOne queries to review and monitor updates to the graph, or
   leverage existing queries.
 - Configure alerts to take action when JupiterOne graph changes, or leverage
@@ -18,8 +18,8 @@
 
 ## Requirements
 
-- You must have a deployed Cloudbees CI Operations Center
-- Cloudbees CI supports Basic Authentication.
+- You must have a deployed CloudBees CI Operations Center
+- CloudBees CI supports Basic Authentication.
 - You must have permission in JupiterOne to install new integrations.
 
 ## Permissions
@@ -34,7 +34,7 @@ If you need help with this integration, please contact
 
 ## Integration Walkthrough
 
-### In Cloudbees CI
+### In CloudBees CI
 
 1. Create a user account
 2. Take note of the login credentials which will latter be used for request
@@ -43,10 +43,10 @@ If you need help with this integration, please contact
 ### In JupiterOne
 
 1. From the configuration **Gear Icon**, select **Integrations**.
-2. Scroll to the **Cloudbees CI** integration tile and click it.
+2. Scroll to the **CloudBees CI** integration tile and click it.
 3. Click the **Add Configuration** button and configure the following settings:
 
-- Enter the **Account Name** by which you'd like to identify this Cloudbees CI
+- Enter the **Account Name** by which you'd like to identify this CloudBees CI
   account in JupiterOne. Ingested entities will have this value stored in
   `tag.AccountName` when **Tag with Account Name** is checked.
 - Enter a **Description** that will further assist your team when identifying
@@ -60,7 +60,7 @@ If you need help with this integration, please contact
 # How to Uninstall
 
 1. From the configuration **Gear Icon**, select **Integrations**.
-2. Scroll to the **Cloudbees CI** integration tile and click it.
+2. Scroll to the **CloudBees CI** integration tile and click it.
 3. Identify and click the **integration to delete**.
 4. Click the **trash can** icon.
 5. Click the **Remove** button to delete the integration.

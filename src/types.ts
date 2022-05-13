@@ -1,4 +1,4 @@
-export type CloudbeesUser = {
+export type CloudBeesUser = {
   user: {
     id: string;
     absoluteUrl: string;
@@ -7,12 +7,12 @@ export type CloudbeesUser = {
   };
 };
 
-export type CloudbeesUserResponse = {
+export type CloudBeesUserResponse = {
   _class: string;
-  users: CloudbeesUser[];
+  users: CloudBeesUser[];
 };
 
-export type CloudbeesGroup = {
+export type CloudBeesGroup = {
   description?: string;
   name: string;
   roleAssignments: {
@@ -25,12 +25,12 @@ export type CloudbeesGroup = {
   users: string[];
 };
 
-export type CloudbeesGroupResponse = {
+export type CloudBeesGroupResponse = {
   _class: string;
-  groups: CloudbeesGroup[];
+  groups: CloudBeesGroup[];
 };
 
-export type CloudbeesRole = {
+export type CloudBeesRole = {
   description?: string;
   filterable: boolean;
   grantedPermissions: string[];
@@ -38,8 +38,8 @@ export type CloudbeesRole = {
   shortUrl: string;
 };
 
-export type CloudbeesRoleResponse = {
+export type CloudBeesRoleResponse = {
   _class: string;
   filterableRoles: string[];
-  roles: CloudbeesRole[];
+  roles: CloudBeesRole[];
 };

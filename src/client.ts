@@ -6,12 +6,12 @@ import {
 
 import { IntegrationConfig } from './config';
 import {
-  CloudbeesGroup,
-  CloudbeesGroupResponse,
-  CloudbeesRole,
-  CloudbeesRoleResponse,
-  CloudbeesUser,
-  CloudbeesUserResponse,
+  CloudBeesGroup,
+  CloudBeesGroupResponse,
+  CloudBeesRole,
+  CloudBeesRoleResponse,
+  CloudBeesUser,
+  CloudBeesUserResponse,
 } from './types';
 import { retry } from '@lifeomic/attempt';
 
@@ -92,9 +92,9 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateUsers(
-    iteratee: ResourceIteratee<CloudbeesUser>,
+    iteratee: ResourceIteratee<CloudBeesUser>,
   ): Promise<void> {
-    const response = await this.request<CloudbeesUserResponse>(
+    const response = await this.request<CloudBeesUserResponse>(
       this.withBaseUri(`/asynchPeople/api/json/?depth=2`),
     );
 
@@ -109,9 +109,9 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateGroups(
-    iteratee: ResourceIteratee<CloudbeesGroup>,
+    iteratee: ResourceIteratee<CloudBeesGroup>,
   ): Promise<void> {
-    const response = await this.request<CloudbeesGroupResponse>(
+    const response = await this.request<CloudBeesGroupResponse>(
       this.withBaseUri(`/groups/api/json/?depth=2`),
     );
 
@@ -126,9 +126,9 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateRoles(
-    iteratee: ResourceIteratee<CloudbeesRole>,
+    iteratee: ResourceIteratee<CloudBeesRole>,
   ): Promise<void> {
-    const response = await this.request<CloudbeesRoleResponse>(
+    const response = await this.request<CloudBeesRoleResponse>(
       this.withBaseUri(`/roles/api/json/?depth=1`),
     );
 
