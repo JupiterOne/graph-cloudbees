@@ -7,7 +7,7 @@ import {
 } from '@jupiterone/integration-sdk-core';
 
 import { Entities } from '../constants';
-import { CloudbeesGroup, CloudbeesRole, CloudbeesUser } from '../../types';
+import { CloudBeesGroup, CloudBeesRole, CloudBeesUser } from '../../types';
 
 export function createUserKey(id: string): string {
   return `cloudbees_user:${id}`;
@@ -21,7 +21,7 @@ export function createRoleKey(id: string): string {
   return `cloudbees_role:${id}`;
 }
 
-export function createUserEntity(user: CloudbeesUser): Entity {
+export function createUserEntity(user: CloudBeesUser): Entity {
   return createIntegrationEntity({
     entityData: {
       source: user,
@@ -41,7 +41,7 @@ export function createUserEntity(user: CloudbeesUser): Entity {
 }
 
 export function createGroupEntity(
-  group: CloudbeesGroup,
+  group: CloudBeesGroup,
   hostname: string,
 ): Entity {
   return createIntegrationEntity({
@@ -63,7 +63,7 @@ export function createGroupEntity(
 }
 
 export function createRoleEntity(
-  role: CloudbeesRole,
+  role: CloudBeesRole,
   hostname: string,
 ): Entity {
   return createIntegrationEntity({

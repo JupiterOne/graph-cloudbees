@@ -8,7 +8,7 @@ import {
 
 import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
-import { CloudbeesGroup } from '../../types';
+import { CloudBeesGroup } from '../../types';
 import { ACCOUNT_ENTITY_KEY } from '../account';
 import { Entities, Steps, Relationships } from '../constants';
 import {
@@ -83,7 +83,7 @@ export async function buildGroupUserRelationships({
   await jobState.iterateEntities(
     { _type: Entities.GROUP._type },
     async (groupEntity) => {
-      const group = getRawData<CloudbeesGroup>(groupEntity);
+      const group = getRawData<CloudBeesGroup>(groupEntity);
 
       if (!group) {
         logger.warn(
@@ -120,7 +120,7 @@ export async function buildGroupRoleRelationships({
   await jobState.iterateEntities(
     { _type: Entities.GROUP._type },
     async (groupEntity) => {
-      const group = getRawData<CloudbeesGroup>(groupEntity);
+      const group = getRawData<CloudBeesGroup>(groupEntity);
 
       if (!group) {
         logger.warn(

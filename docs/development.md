@@ -1,20 +1,20 @@
 # Development
 
-This integration focuses on Cloudbees CI and is using
-[Cloudbees CI API](https://docs.cloudbees.com/docs/cloudbees-ci-api/latest/api-authentication)
+This integration focuses on CloudBees CI and is using
+[CloudBees CI API](https://docs.cloudbees.com/docs/cloudbees-ci-api/latest/api-authentication)
 and [Jenkins API](https://www.jenkins.io/doc/book/using/remote-access-api/) for
-interacting with the Hexnode resources.
+interacting with the CloudBees CI resources.
 
 ## Prerequisites
 
-Cloudbees CI needs to be deployed using a Kubernetes cluster. For instructions
-on how to deploy Cloudbees CI on your preferred cloud provider or on your local
+CloudBees CI needs to be deployed using a Kubernetes cluster. For instructions
+on how to deploy CloudBees CI on your preferred cloud provider or on your local
 machine. Follow
 [this guide](https://docs.cloudbees.com/docs/cloudbees-ci/latest/cloud-onboarding#:~:text=Requirements%20validation%20tool-,Install,-Use%20installation%20instructions).
 
 ## Provider account setup
 
-If you don't have a user yet create a user in your Cloudbees CI Operations
+If you don't have a user yet create a user in your CloudBees CI Operations
 Dashboards.
 
 1. In the menu on the left, select **Manage Jenkins**

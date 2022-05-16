@@ -39,17 +39,17 @@ export const instanceConfigFields: IntegrationInstanceConfigFieldMap = {
  */
 export interface IntegrationConfig extends IntegrationInstanceConfig {
   /**
-   * The Cloudbees user ID used to authenticate requests.
+   * The CloudBees user ID used to authenticate requests.
    */
   userId: string;
 
   /**
-   * The Cloudbees API key used to authenticate requests.
+   * The CloudBees API key used to authenticate requests.
    */
   apiKey: string;
 
   /**
-   * The Cloudbees hostname.
+   * The CloudBees hostname.
    */
   hostname: string;
 }
@@ -62,6 +62,15 @@ export async function validateInvocation(
   if (!config.userId || !config.apiKey || !config.hostname) {
     throw new IntegrationValidationError(
       'Config requires all of {userId, apiKey, hostname}',
+    );
+  }
+
+  const regEx: RegExp =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/cjoc$/g;
+
+  if (!regEx.test(config.hostname)) {
+    throw new IntegrationValidationError(
+      'The hostname value is of an invalid format (valid: http(s)://ip-hostname/cjoc).',
     );
   }
 
